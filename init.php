@@ -24,3 +24,6 @@ $classLoader->register();
 // Load Symfony
 $classLoader = new \Doctrine\Common\ClassLoader('Symfony', DOCTRINECOMMON.DIRECTORY_SEPARATOR.'Symfony');
 $classLoader->register();
+
+// Load namespaces as defined in configuration
+Doctrine_Namespace::initialize();

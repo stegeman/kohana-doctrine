@@ -24,17 +24,7 @@ class Kohana_Doctrine_Mapping {
             $settings = self::getSettings();
         }
         
-        switch($settings["type"]) {
-            case 'xml':
-                $driver = Doctrine_Mapping_Xml::instance($settings);
-                break;
-            case 'annotation':
-                break;
-            case 'yaml':
-                break;
-        }
-        
-        return $driver;
+        return Doctrine_Mapping_Xml::instance($settings);
     }
     
     /**

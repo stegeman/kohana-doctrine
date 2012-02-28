@@ -5,16 +5,16 @@
  * 
  * @author René Terstegen (reneterstegen@gmail.com)
  */
-class Kohana_Doctrine_Mapping_XML {
+class Kohana_Doctrine_Mapping_Yaml {
     /**
-     * Generate an instance of the XML mapping based on the given settings. IF no settings are given, the method tries to retrieve the
+     * Generate an instance of the Yaml mapping based on the given settings. IF no settings are given, the method tries to retrieve the
      * settings from the config file.
      *
      * @static
      * @access public
      * @param array $config
      * 
-     * @return \Doctrine\ORM\Mapping\Driver\XmlDriver
+     * @return \Doctrine\ORM\Mapping\Driver\YamlDriver
      */
     public static function instance($settings = null) {
         // Check for config
@@ -22,15 +22,15 @@ class Kohana_Doctrine_Mapping_XML {
             $settings = self::getSettings();
         }
         
-        // Generate xml driver
-        $xmlDriver = new \Doctrine\ORM\Mapping\Driver\XmlDriver($settings["path"]);
+        // Generate yaml driver
+        $yamlDriver = new \Doctrine\ORM\Mapping\Driver\YamlDriver($settings["path"]);
 
-        // Set file extension of XML files
-        if(array_key_exists("extension", $settings)) {
-            $xmlDriver->setFileExtension($settings["extension"]);
+        // Set file extension of yaml files
+        if(array_key_exists("extension", $config)) {
+            $yamlDriver->setFileExtension($config["extension"]);
         }
         
-        return $xmlDriver;
+        return $yamlDriver;
     }
     
     /**

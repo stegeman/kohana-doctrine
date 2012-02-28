@@ -25,8 +25,23 @@ class Kohana_Doctrine_Config {
         $Config = new \Doctrine\ORM\Configuration();
         
         // Get mapping type
-        $Mapping = Doctrine_Mapping::instance($settings->mapping);
-        $Config->setMetaDataDriverImpl($Mapping);
+        switch($settings->mapping['type']) {
+            case 'xml':
+                // Create xml mapping
+                $Mapping = Doctrine_Mapping::instance($settings->mapping);
+                break;
+            case 'annotation':
+                // Generate annotation mapping
+                $Mapping = $Config->newDefaultAnnotationDriver($settings->mapping["path"]);
+                break;
+            case 'yaml':
+                // Generate yaml mapping
+                $Mapping = Doctrine_Mapping::instance($settings->mapping);
+                break;
+                
+        }
+        // Set driver implementation
+        $Config->setMetaDataDriverImpl($Mapping);        
         
         // Get cache settings
         $Cache = Doctrine_Cache::instance($settings->cache);
