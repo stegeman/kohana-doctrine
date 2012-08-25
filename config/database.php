@@ -27,4 +27,6 @@ return array(
                          "namespace"	=> "Proxies",
                          "generate"     => true,
                      ),
+    "namespaces"    => array(
+                    ),
 );
