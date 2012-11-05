@@ -24,22 +24,22 @@ try {
     define("SYMFONY", realpath(DOCTRINE_ORM.DIRECTORY_SEPARATOR."vendor"));
     define("APPPATH", realpath(__DIR__.DIRECTORY_SEPARATOR."..".DIRECTORY_SEPARATOR."..".DIRECTORY_SEPARATOR."..".DIRECTORY_SEPARATOR."application".DIRECTORY_SEPARATOR));
     define("MODPATH", realpath(__DIR__.DIRECTORY_SEPARATOR."..".DIRECTORY_SEPARATOR."..".DIRECTORY_SEPARATOR));
-    
+
     // Load Doctrine namespaces
     require_once realpath(DOCTRINE_COMMON.DIRECTORY_SEPARATOR.'Doctrine/Common/ClassLoader.php');
-    
+
     $classLoader = new \Doctrine\Common\ClassLoader('Doctrine\ORM', DOCTRINE_ORM);
     $classLoader->register();
-    
+
     $classLoader = new \Doctrine\Common\ClassLoader('Doctrine\DBAL', DOCTRINE_DBAL);
     $classLoader->register();
-    
+
     $classLoader = new \Doctrine\Common\ClassLoader('Doctrine\Common', DOCTRINE_COMMON);
     $classLoader->register();
-    
+
     $classLoader = new \Doctrine\Common\ClassLoader('Symfony', SYMFONY);
     $classLoader->register();
-    
+
     // Load configuration file
     $configFile = APPPATH.DIRECTORY_SEPARATOR."config".DIRECTORY_SEPARATOR."database.php";
     if(!file_exists($configFile))
@@ -49,17 +49,18 @@ try {
 
     // Load the config file in a variable
     $config = require_once($configFile);
-    
+
     /** Load all namespaces specified in configuration */
     foreach($config["namespaces"] AS $namespace => $path) {
         $classLoader = new \Doctrine\Common\ClassLoader($namespace, $path);
         $classLoader->register();
     }
-    
+
     /** Load mapping as specified in configuration */
+    $Configuration = new \Doctrine\ORM\Configuration();
     switch($config["mapping"]["type"]) {
         case "annotation":
-            $mapping = new \Doctrine\ORM\Mapping\Driver\AnnotationDriver($config["mapping"]["path"]);
+            $mapping = $Configuration->newDefaultAnnotationDriver($config["mapping"]["path"]);
             break;
         case "xml":
             $mapping = new \Doctrine\ORM\Mapping\Driver\XmlDriver($config["mapping"]["path"]);
@@ -71,27 +72,26 @@ try {
         case "yaml":
             // Generate yaml driver
             $mapping = new \Doctrine\ORM\Mapping\Driver\YamlDriver($config["mapping"]["path"]);
-    
+
             // Set file extension of yaml files
             if(array_key_exists("extension", $config["mapping"])) {
                 $mapping->setFileExtension($config["mapping"]["extension"]);
             }
             break;
     }
-    
+
     /** Load caching as specified in configuration */
     switch($config["cache"]["type"]) {
         case "array":
             $cache = new \Doctrine\Common\Cache\ArrayCache;
             break;
-    } 
+    }
 
     // Build configuration
-    $Configuration = new \Doctrine\ORM\Configuration();
     $Configuration->setMetadataCacheImpl($cache);
     $Configuration->setProxyDir($config["proxy"]["path"]);
-    $Configuration->setProxyNamespace($config["proxy"]["path"]);
-    $Configuration->setMetadataDriverImpl($mapping);    
+    $Configuration->setProxyNamespace($config["proxy"]["namespace"]);
+    $Configuration->setMetadataDriverImpl($mapping);
 
     // Create EntityManager
     $em = \Doctrine\ORM\EntityManager::create($config["credentials"], $Configuration);
@@ -101,9 +101,9 @@ try {
         'db' => new \Doctrine\DBAL\Tools\Console\Helper\ConnectionHelper($em->getConnection()),
         'em' => new \Doctrine\ORM\Tools\Console\Helper\EntityManagerHelper($em)
     ));
-    
+
     $helperSet = ($helperSet) ?: new \Symfony\Component\Console\Helper\HelperSet();
-    
+
     // Run console
     \Doctrine\ORM\Tools\Console\ConsoleRunner::run($helperSet);
 } catch(Exception $e) {
