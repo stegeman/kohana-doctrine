@@ -25,29 +25,26 @@ class Kohana_Doctrine_Config {
             $settings = self::getSettings();
         }
 
+        // Get cache settings
+        $Cache = Doctrine_Cache::instance($settings->cache);
+
         // Get mapping type
         switch($settings->mapping['type']) {
             case 'xml':
                 // Create xml mapping
-                $Config = Setup::createXMLMetadataConfiguration($settings->mapping["path"], $settings->production);
+                $Config = Setup::createXMLMetadataConfiguration($settings->mapping["path"], $settings->production, $settings["proxy"]["path"], $Cache);
                 break;
             case 'annotation':
                 // Generate annotation mapping
-                $Config = Setup::createAnnotationMetadataConfiguration($settings->mapping["path"], $settings->production);
+                $Config = Setup::createAnnotationMetadataConfiguration($settings->mapping["path"], $settings->production, $settings["proxy"]["path"], $Cache);
                 break;
             case 'yaml':
                 // Generate yaml mapping
-                $Config = Setup::createYAMLMetadataConfiguration($settings->mapping["path"], $settings->production);
+                $Config = Setup::createYAMLMetadataConfiguration($settings->mapping["path"], $settings->production, $settings["proxy"]["path"], $Cache);
                 break;
         }
 
-        // Get cache settings
-        $Cache = Doctrine_Cache::instance($settings->cache);
-        $Config->setMetadataCacheImpl($Cache);
-        $Config->setQueryCacheImpl($Cache);
-
         // Set proxies and proxie-prefix
-        $Config->setProxyDir($settings->proxy["path"]);
         $Config->setProxyNamespace($settings->proxy["namespace"]);
         $Config->setAutoGenerateProxyClasses($settings->proxy["generate"]);
 
