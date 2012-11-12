@@ -27,22 +27,31 @@ class Kohana_Doctrine_Config {
 
         // Get cache settings
         $Cache = Doctrine_Cache::instance($settings->cache);
+        $DriverChain = new \Doctrine\ORM\Mapping\Driver\DriverChain();
 
         // Get mapping type
         switch($settings->mapping['type']) {
             case 'xml':
                 // Create xml mapping
                 $Config = Setup::createXMLMetadataConfiguration($settings->mapping["path"], $settings->production, $settings["proxy"]["path"], $Cache);
+                foreach($settings->namespaces AS $namespace => $path)
+                    $DriverChain->addDriver($Config->getMetadataDriverImpl(), $namespace);
                 break;
             case 'annotation':
                 // Generate annotation mapping
                 $Config = Setup::createAnnotationMetadataConfiguration($settings->mapping["path"], $settings->production, $settings["proxy"]["path"], $Cache);
+                foreach($settings->namespaces AS $namespace)
+                    $DriverChain->addDriver($Config->getMetadataDriverImpl(), $namespace);
                 break;
             case 'yaml':
                 // Generate yaml mapping
                 $Config = Setup::createYAMLMetadataConfiguration($settings->mapping["path"], $settings->production, $settings["proxy"]["path"], $Cache);
+                foreach($settings->namespaces AS $namespace)
+                    $DriverChain->addDriver($Config->getMetadataDriverImpl(), $namespace);
                 break;
         }
+
+        $Config->setMetadataDriverImpl($DriverChain);
 
         // Set proxies and proxie-prefix
         $Config->setProxyNamespace($settings->proxy["namespace"]);
