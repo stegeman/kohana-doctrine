@@ -42,9 +42,13 @@ try {
 
     // Load configuration file
     $configFile = APPPATH.DIRECTORY_SEPARATOR."config".DIRECTORY_SEPARATOR."database.php";
-    if(!file_exists($configFile))
-        throw new Exception ("Could not find configuration file. Configuration file expected at '$configFile'");
-    elseif(!is_readable($configFile))
+    if(!file_exists($configFile)) {
+        $configFile = __DIR__.DIRECTORY_SEPARATOR."..".DIRECTORY_SEPARATOR."config".DIRECTORY_SEPARATOR."database.php";
+        if(!file_exists($configFile))
+            throw new Exception ("Could not find configuration file. Configuration file expected at '$configFile'");
+    }
+
+    if(!is_readable($configFile))
         throw new Exception ("Could not read configuration file. Please change permission on config file '$configFile'");
 
     // Load the config file in a variable
@@ -90,7 +94,7 @@ try {
     // Build configuration
     $Configuration->setMetadataCacheImpl($cache);
     $Configuration->setProxyDir($config["proxy"]["path"]);
-    $Configuration->setProxyNamespace($config["proxy"]["namespace"]);
+    $Configuration->setProxyNamespace($config["proxy"]["path"]);
     $Configuration->setMetadataDriverImpl($mapping);
 
     // Create EntityManager

@@ -27,8 +27,4 @@ return array(
                          "namespace"	=> "Proxies",
                          "generate"     => true,
                      ),
-    /** Define namespaces */
-    "namespaces"    => array(),
-    /** Set production flag */
-    "production"    => false
 );
