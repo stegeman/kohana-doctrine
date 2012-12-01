@@ -94,7 +94,7 @@ try {
     // Build configuration
     $Configuration->setMetadataCacheImpl($cache);
     $Configuration->setProxyDir($config["proxy"]["path"]);
-    $Configuration->setProxyNamespace($config["proxy"]["path"]);
+    $Configuration->setProxyNamespace($config["proxy"]["namespace"]);
     $Configuration->setMetadataDriverImpl($mapping);
 
     // Create EntityManager
