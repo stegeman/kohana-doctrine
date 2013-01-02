@@ -41,7 +41,7 @@ try {
     $classLoader->register();
 
     // Load configuration file
-    $configFile = APPPATH.DIRECTORY_SEPARATOR."config".DIRECTORY_SEPARATOR."database.php";
+    $configFile = APPPATH.DIRECTORY_SEPARATOR."config".DIRECTORY_SEPARATOR."doctrine.php";
     if(!file_exists($configFile)) {
         $configFile = __DIR__.DIRECTORY_SEPARATOR."..".DIRECTORY_SEPARATOR."config".DIRECTORY_SEPARATOR."database.php";
         if(!file_exists($configFile))

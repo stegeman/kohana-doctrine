@@ -46,7 +46,7 @@ class Kohana_Entitymanager {
      * @return array
      */
     private static function getSettings() {
-        return Kohana::$config->load('database');
+        return Kohana::$config->load('doctrine');
     }
 
     /**
