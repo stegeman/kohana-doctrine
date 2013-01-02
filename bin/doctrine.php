@@ -43,9 +43,7 @@ try {
     // Load configuration file
     $configFile = APPPATH.DIRECTORY_SEPARATOR."config".DIRECTORY_SEPARATOR."doctrine.php";
     if(!file_exists($configFile)) {
-        $configFile = __DIR__.DIRECTORY_SEPARATOR."..".DIRECTORY_SEPARATOR."config".DIRECTORY_SEPARATOR."database.php";
-        if(!file_exists($configFile))
-            throw new Exception ("Could not find configuration file. Configuration file expected at '$configFile'");
+        throw new Exception ("Could not find configuration file. Configuration file expected at '$configFile'");
     }
 
     if(!is_readable($configFile))
