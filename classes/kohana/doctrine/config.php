@@ -69,6 +69,6 @@ class Kohana_Doctrine_Config {
      * @return object
      */
     private static function getSettings() {
-        return Kohana::$config->load('database');
+        return Kohana::$config->load('doctrine');
     }
 }
