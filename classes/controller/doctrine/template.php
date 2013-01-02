@@ -1,9 +1,11 @@
 <?php
 class Controller_Doctrine_Template extends Controller_Template {
 
-    public $em;
+    public $_em;
 
     public function before() {
-        $this->em = EntityManager::instance();
+        parent::before();
+
+        $this->_em = EntityManager::instance();
     }
 }
