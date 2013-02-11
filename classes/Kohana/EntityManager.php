@@ -5,7 +5,7 @@
  *
  * @author René Terstegen (reneterstegen@gmail.com)
  */
-class Kohana_Entitymanager {
+class Kohana_EntityManager {
     /**
      * @staticvar EntityManager must be a singleton. This attribute will be set if the EntityManager is created
      */

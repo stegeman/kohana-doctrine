@@ -2,7 +2,7 @@
 
 /**
  * Skeleton class for extending Kohana_EntityManager
- * 
+ *
  * @author reneterstegen (reneterstegen@gmail.com)
  */
-class EntityManager extends Kohana_Entitymanager { }
+class EntityManager extends Kohana_EntityManager { }
