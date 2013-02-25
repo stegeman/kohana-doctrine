@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="User\Entity\User" table="user" repository-class="User\Repository\User">
+    <id name="id" type="integer" column="id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    
+    <unique-constraints>
+      <unique-constraint columns="username" name="username_index" />
+    </unique-constraints>
+    
+    <field name="username" type="string" column="username" length="255" precision="0" scale="0"/>
+    <field name="password" type="string" column="password" length="255" precision="0" scale="0"/>
+    <field name="activationCode" type="string" column="activation_code" length="255" nullable="true" />
+    <field name="created" type="datetime" column="created" nullable="true" />
+    <field name="modified" type="datetime" column="modified" precision="0" scale="0"/>
+    <lifecycle-callbacks>
+      <lifecycle-callback type="prePersist" method="prePersist"/>
+      <lifecycle-callback type="postPersist" method="postPersist"/>
+      <lifecycle-callback type="preUpdate" method="preUpdate"/>
+      <lifecycle-callback type="postUpdate" method="postUpdate"/>
+      <lifecycle-callback type="postLoad" method="postLoad"/>
+    </lifecycle-callbacks>
+  </entity>
+  
+</doctrine-mapping>
