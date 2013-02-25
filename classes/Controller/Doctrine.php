@@ -10,13 +10,26 @@ class Controller_Doctrine extends Controller {
     }
 
     public function action_demo() {
-        echo 1; die;
+        echo "Create new User entity<br>";
         $User = new \User\Entity\User();
         $User->setUsername("foo");
         $User->setPassword("bar");
+        $User->setModified(new DateTime());
+        $User->setCreated(new DateTime());
 
-        $this->_em->persist($User);
-        $this->_em->flush();
-        die;
+        echo "Save new user to database<br>";
+        try {
+            $this->_em->persist($User);
+            $this->_em->flush();
+        } catch(Exception $e) {
+            echo "User does already exist. You've run this script before.<br>";
+        }
+
+        unset($User);
+
+        echo "Get user from database<br>";
+        $User = $this->_em->getRepository("User\Entity\User")->findOneBy(array("username" => "foo"));
+
+        echo "Id of the found user is: ".$User->getId();
     }
 }
