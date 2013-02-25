@@ -16,3 +16,11 @@ Doctrine\ORM\Tools\Setup::registerAutoloadGit($pathToDoctrine);
 
 // Load namespaces as defined in configuration
 Doctrine_Namespace::initialize();
+
+Route::set("doctrine/demo", "doctrine/demo")
+     ->defaults(
+         array(
+             'controller'    => 'Doctrine',
+             'action'        => 'demo'
+         )
+     );
