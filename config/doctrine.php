@@ -20,6 +20,8 @@ return array(
     /** Cache settings. Only arraycache is implemented right now */
     "cache"	         => array(
                          "type"         => "array",
+                         // "host"        => "hostname",
+                         // "port"        => "11211",
                      ),
     /** Proxy settings */
     "proxy"			 => array(
