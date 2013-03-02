@@ -26,10 +26,33 @@ class Kohana_Doctrine_Cache {
         }
 
         // Check for type
-        switch($settings["type"]) {
+        switch(mb_strtolower($settings["type"])) {
             case 'array':
                 return new \Doctrine\Common\Cache\ArrayCache;
                 break;
+            case 'apc':
+                return new \Doctrine\Common\Cache\ApcCache();
+                break;
+            case 'memcache':
+                $memcache = new Memcache();
+                $memcache->connect($settings["host"], $settings["port"]);
+                $CacheDriver = new \Doctrine\Common\Cache\MemcacheCache();
+                $CacheDriver->setMemcache($memcache);
+                return $CacheDriver;
+                break;
+            case 'xcache':
+                return new \Doctrine\Common\Cache\XcacheCache();
+                break;
+            case 'redis':
+                if(!class_exists("Redis")) {
+                    throw new Exception("Redis cache is not available");
+                }
+                $redis = new Redis();
+                $redis->connect($settings["host"], $settings["port"]);
+                $cacheDriver = new \Doctrine\Common\Cache\RedisCache();
+                $cacheDriver->setRedis($redis);
+                return $cacheDriver;
+
         }
     }
 
