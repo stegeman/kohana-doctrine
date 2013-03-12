@@ -85,12 +85,32 @@ try {
     /** Load caching as specified in configuration */
     switch($config["cache"]["type"]) {
         case "array":
-            $cache = new \Doctrine\Common\Cache\ArrayCache;
+            $Cache = new \Doctrine\Common\Cache\ArrayCache;
             break;
+        case 'apc':
+            $Cache =  new \Doctrine\Common\Cache\ApcCache();
+            break;
+        case 'memcache':
+            $memcache = new Memcache();
+            $memcache->connect($settings["host"], $settings["port"]);
+            $Cache = new \Doctrine\Common\Cache\MemcacheCache();
+            $Cache->setMemcache($memcache);
+            break;
+        case 'xcache':
+            $Cache = \Doctrine\Common\Cache\XcacheCache();
+            break;
+        case 'redis':
+            if(!class_exists("Redis")) {
+                throw new Exception("Redis cache is not available");
+            }
+            $redis = new Redis();
+            $redis->connect($settings["host"], $settings["port"]);
+            $Cache = new \Doctrine\Common\Cache\RedisCache();
+            $Cache->setRedis($redis);
     }
 
     // Build configuration
-    $Configuration->setMetadataCacheImpl($cache);
+    $Configuration->setMetadataCacheImpl($Cache);
     $Configuration->setProxyDir($config["proxy"]["path"]);
     $Configuration->setProxyNamespace($config["proxy"]["namespace"]);
     $Configuration->setMetadataDriverImpl($mapping);
