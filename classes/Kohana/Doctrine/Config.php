@@ -53,6 +53,12 @@ class Kohana_Doctrine_Config {
 
         $Config->setMetadataDriverImpl($DriverChain);
 
+        // Implement maximum caching
+        $Config->setMetadataCacheImpl($Cache);
+        $Config->setHydrationCacheImpl($Cache);
+        $Config->setQueryCacheImpl($Cache);
+        $Config->setResultCacheImpl($Cache);
+
         // Set proxies and proxie-prefix
         $Config->setProxyNamespace($settings->proxy["namespace"]);
         $Config->setAutoGenerateProxyClasses($settings->proxy["generate"]);
