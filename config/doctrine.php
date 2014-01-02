@@ -32,5 +32,15 @@ return array(
     /** Define namespaces */
     "namespaces"    => array(),
     /** Set production flag */
-    "production"    => false
+    "production"    => false,
+    /** Set events */
+    "events"        => array(
+                            "listeners" => array(
+                                "class" => array(), // Formated like "ClassnameOfListener" => "arrayWithEvents"
+                            ),
+                            "subscribers" => array(
+                                "class" // EventSubscriberClass
+                            ),
+
+    ),
 );

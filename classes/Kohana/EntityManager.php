@@ -28,8 +28,11 @@ class Kohana_EntityManager {
             // Get credentials
             $credentials = self::getConnectionCredentials();
 
+            // Get Eventmanager
+            $EventManager = Doctrine_Eventmanager::instance();
+
             // Create entitymanager
-            $entityManager		= \Doctrine\ORM\EntityManager::create($credentials, $Config);
+            $entityManager		= \Doctrine\ORM\EntityManager::create($credentials, $Config, $EventManager);
 
             // Set the entityManager
             self::$instance = $entityManager;
